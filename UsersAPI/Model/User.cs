@@ -7,6 +7,8 @@ namespace UsersAPI.Model
         public int Id { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
+
+        public ICollection<Post> posts { get; set; }
       
 
     }
