@@ -9,9 +9,9 @@ namespace UsersAPI.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        PostService _postservice;
+        INewPostRepo _postservice;
 
-        public PostController(PostService postService)
+        public PostController(INewPostRepo postService)
         {
             _postservice = postService;
         }
@@ -19,7 +19,7 @@ namespace UsersAPI.Controllers
         [HttpGet]
         public IActionResult GetAllPosts()
         {
-            var posts = _postservice.GetPostsList();
+            var posts = _postservice.Get();
             if (posts == null)
                 return NotFound();
             return Ok(posts);
@@ -28,14 +28,14 @@ namespace UsersAPI.Controllers
         [HttpPost] 
         public IActionResult AddPost( [FromBody] Post post)
         {
-            _postservice.AddPost(post); 
+            _postservice.Add(post); 
             return Ok();
         }
 
         [HttpGet("{id}")]
         public IActionResult GetPostID(int id )
         {
-            var post = _postservice.GetPostsId(id);
+            var post = _postservice.GetId(id);
             if (post == null)
                 return NotFound();
             return Ok(post); 
@@ -44,14 +44,14 @@ namespace UsersAPI.Controllers
         [HttpPut]
         public IActionResult UpdatePost(Post post)
         {
-            _postservice.UpdatePost(post);
+            _postservice.Update(post);
             return Ok(); 
         }
 
         [HttpDelete]
         public IActionResult DeletePost(int id)
         {
-            _postservice.DeletePost(id) ;
+            _postservice.Delete(id) ;
             return Ok(); 
 
         }

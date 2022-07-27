@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Downloads\\Compressed\\UsersAPI-EF-Core-main\\UsersAPI\\UsersAPI.csproj": {}
+    "C:\\Users\\User\\Downloads\\UserApi\\UsersAPI\\UsersAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Downloads\\Compressed\\UsersAPI-EF-Core-main\\UsersAPI\\UsersAPI.csproj": {
+    "C:\\Users\\User\\Downloads\\UserApi\\UsersAPI\\UsersAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Downloads\\Compressed\\UsersAPI-EF-Core-main\\UsersAPI\\UsersAPI.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Downloads\\UserApi\\UsersAPI\\UsersAPI.csproj",
         "projectName": "UsersAPI",
-        "projectPath": "C:\\Users\\User\\Downloads\\Compressed\\UsersAPI-EF-Core-main\\UsersAPI\\UsersAPI.csproj",
+        "projectPath": "C:\\Users\\User\\Downloads\\UserApi\\UsersAPI\\UsersAPI.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Downloads\\Compressed\\UsersAPI-EF-Core-main\\UsersAPI\\obj\\",
+        "outputPath": "C:\\Users\\User\\Downloads\\UserApi\\UsersAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -3,9 +3,9 @@
 
 namespace UsersAPI.Model
 {
-    public class Post
+    public class Post : BaseModel
     {
-        public int Id { get; set; }
+        
 
         public string Ptitle { get; set; }
 

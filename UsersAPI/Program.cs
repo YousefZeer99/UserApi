@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UsersAPI.Model;
 using UsersAPI.Repos;
+using UsersAPI.Extension;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,9 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<UserContext>(d => d.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString1")));
-builder.Services.AddScoped<IUserService, UserRepos>();
-builder.Services.AddScoped<PostService, PostRepo>();
+builder.Services.NeedExt(builder.Configuration);
+
  
 
 
