@@ -16,13 +16,18 @@ namespace UsersAPI.Controllers
             _userService = service;
         }
 
+        // for part 2 from the task i will pass the role as a parameter with the header
+
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllUsers([FromHeader] string role)
         {
-            var users=_userService.Get();
-            if (users == null)
-                return NotFound();
-            return Ok(users);
+            if (role == "Admin") {
+                var users = _userService.Get();
+                if (users == null)
+                    return NotFound();
+                return Ok(users);
+            }
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
