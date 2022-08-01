@@ -1,18 +1,19 @@
-﻿using UsersAPI.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using UsersAPI.Model;
 
 namespace UsersAPI.Repos
 {
 
     public interface IGeneRepo<T> where T : class
     {
-        List<T> Get();
-        public T GetId(int Id);
+        Task<List<T>> Get();
+        public ValueTask<T?> GetId(int Id);
 
-        public T Add(T ex);
+        public Task<T> Add(T ex);
 
         public T Update(T ex);
 
-        public void Delete(int id);
+        public Task<T> Delete(int id);
 
 
 
@@ -30,20 +31,22 @@ namespace UsersAPI.Repos
             _context = context;
         }
 
-        public List<T> Get()
+        public async Task<List<T>> Get()
         {
-            return _context.Set<T>().ToList();
+            var ex = await _context.Set<T>().ToListAsync();
+            return ex; 
         }
 
-        public T GetId(int Id)
+        public ValueTask<T?> GetId(int Id)
         {
-            return _context.Find<T>(Id);
+            ValueTask<T?> ex = _context.Set<T>().FindAsync(Id);
+            return ex;
         }
 
-        public T Add(T ex)
+        public async Task<T> Add(T ex)
         {
-            _context.Add<T>(ex);
-            _context.SaveChanges();
+           await _context.Set<T>().AddAsync(ex);
+           await _context.SaveChangesAsync();
             return ex;
 
         }
@@ -60,13 +63,13 @@ namespace UsersAPI.Repos
         }
 
 
-        public void Delete(int id)
+        public async Task<T> Delete(int id)
         {
-            var ex = GetId(id);
+            var ex = await GetId(id);
 
-            _context.Remove<T>(ex);
-            _context.SaveChanges();
-
+            _context.Set<T>().Remove(ex);
+            await _context.SaveChangesAsync();
+            return ex; 
 
 
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using UsersAPI.Model;
 using UsersAPI.Repos;
+using AutoMapper; 
 
 namespace UsersAPI.Controllers
 {
@@ -11,10 +12,16 @@ namespace UsersAPI.Controllers
     {
 
         INewUserRepo _userService;
-        public UsersController(INewUserRepo service)
+        IMapper _mapper;
+
+
+        public UsersController(INewUserRepo service , IMapper mapper)
         {
             _userService = service;
+            _mapper = mapper;
         }
+
+
 
         // for part 2 from the task i will pass the role as a parameter with the header
 

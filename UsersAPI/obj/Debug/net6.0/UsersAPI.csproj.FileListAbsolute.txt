@@ -211,3 +211,4 @@ C:\Users\User\Downloads\UserApi\UsersAPI\obj\Debug\net6.0\refint\UsersAPI.dll
 C:\Users\User\Downloads\UserApi\UsersAPI\obj\Debug\net6.0\UsersAPI.pdb
 C:\Users\User\Downloads\UserApi\UsersAPI\obj\Debug\net6.0\UsersAPI.genruntimeconfig.cache
 C:\Users\User\Downloads\UserApi\UsersAPI\obj\Debug\net6.0\ref\UsersAPI.dll
+C:\Users\User\Downloads\UserApi\UsersAPI\bin\Debug\net6.0\AutoMapper.dll
