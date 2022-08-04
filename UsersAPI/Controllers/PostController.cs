@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UsersAPI.Model;
 using UsersAPI.Repos;
+using UsersAPI.ViewM;
 
 namespace UsersAPI.Controllers
 {
@@ -10,48 +13,60 @@ namespace UsersAPI.Controllers
     public class PostController : ControllerBase
     {
         INewPostRepo _postservice;
+        IMapper _mapper; 
 
-        public PostController(INewPostRepo postService)
+        public PostController(INewPostRepo postService , IMapper mapper)
         {
             _postservice = postService;
+            _mapper = mapper;
         }
 
+
+        [Authorize]
         [HttpGet]
-        public IActionResult GetAllPosts()
+        public async Task<ActionResult<List<PostVM>>> GetAllPosts()
         {
-            var posts = _postservice.Get();
+            var posts = await _postservice.Get<PostVM>();
+            var PostViewM = _mapper.Map<List<PostVM>>(posts);
             if (posts == null)
                 return NotFound();
-            return Ok(posts);
+            return Ok(PostViewM);
         }
+
 
         [HttpPost] 
-        public IActionResult AddPost( [FromBody] Post post)
+        public async Task<ActionResult<PostVM>> AddPost( [FromBody] PostVM post)
         {
-            _postservice.Add(post); 
-            return Ok();
+           var model = await _postservice.Add(_mapper.Map<Post>(post));
+            var PostViewM = _mapper.Map<PostVM>(model);
+            return Ok(PostViewM);
         }
 
+
+
         [HttpGet("{id}")]
-        public IActionResult GetPostID(int id )
+        public async Task<ActionResult<PostVM>> GetPostID(int id )
         {
-            var post = _postservice.GetId(id);
+            var post = await _postservice.GetId<PostVM>(id);
+            var PostViewM = _mapper.Map<PostVM>(post);
+
             if (post == null)
                 return NotFound();
-            return Ok(post); 
+            return Ok(PostViewM); 
         }
 
         [HttpPut]
-        public IActionResult UpdatePost(Post post)
+        public ActionResult<PostVM> UpdatePost(PostVM post)
         {
-            _postservice.Update(post);
-            return Ok(); 
+            var model  = _postservice.Update(_mapper.Map<Post>(post));
+            var PostViewM = _mapper.Map<PostVM>(model);
+            return Ok(PostViewM); 
         }
 
         [HttpDelete]
-        public IActionResult DeletePost(int id)
+        public async Task<ActionResult<PostVM>> DeletePost(int id)
         {
-            _postservice.Delete(id) ;
+           await _postservice.Delete<PostVM>(id) ;
             return Ok(); 
 
         }

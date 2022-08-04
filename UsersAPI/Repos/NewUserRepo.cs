@@ -1,4 +1,5 @@
-﻿using UsersAPI.Model;
+﻿using AutoMapper;
+using UsersAPI.Model;
 
 namespace UsersAPI.Repos
 {
@@ -9,7 +10,7 @@ namespace UsersAPI.Repos
 
     public class NewUserRepo : GeneRepo<User>, INewUserRepo
     {
-        public NewUserRepo(UserContext context) : base(context)
+        public NewUserRepo(UserContext context , IMapper mapper) : base(context,mapper)
         {
         }
     }

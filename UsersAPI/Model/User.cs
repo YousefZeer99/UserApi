@@ -1,7 +1,9 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
+
 namespace UsersAPI.Model
 {
-    public class User : BaseModel
+    public class User :IdentityUser<int>, IBaseModel
     {
         
        

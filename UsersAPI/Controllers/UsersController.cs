@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using UsersAPI.Model;
 using UsersAPI.Repos;
-using AutoMapper; 
+using AutoMapper;
+using UsersAPI.ViewM;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UsersAPI.Controllers
 {
@@ -25,47 +27,55 @@ namespace UsersAPI.Controllers
 
         // for part 2 from the task i will pass the role as a parameter with the header
 
+        [Authorize]
         [HttpGet]
-        public IActionResult GetAllUsers([FromHeader] string role)
+        public async Task<ActionResult<List<UserVM>>> GetAllUsers()
         {
-            if (role == "Admin") {
-                var users = _userService.Get();
-                if (users == null)
-                    return NotFound();
-                return Ok(users);
-            }
-            return BadRequest();
+            var listOfU = await _userService.Get<UserVM>();
+            var userViewM = _mapper.Map<List<UserVM>>(listOfU);
+            if (listOfU == null)
+                return NotFound(); 
+            return Ok(userViewM);
         }
+
+        
+
 
         [HttpGet("{id}")]
-        public IActionResult GetUser(int id)
+        
+        public async Task<ActionResult<UserVM>> GetUser(int id)
         {
-            var user = _userService.GetId(id);
+            var user = await _userService.GetId<UserVM>(id);
+            var userViewM = _mapper.Map<UserVM>(user);
             if (user == null)
                 return NotFound();
-            return Ok(user);
+            return Ok(userViewM);
         }
 
+        //Update user
         [HttpPut]
-        public IActionResult SaveUser(User user)
+        public ActionResult<UserVM> SaveUser(UserVM user)
         {
-            var model=_userService.Update(user);
-            return Ok(model);
+            var model=_userService.Update(_mapper.Map<User>(user));
+            var userViewM = _mapper.Map<List<UserVM>>(model);
+            return Ok(userViewM);
         }
 
+        // Add user
         [HttpPost]
-        public IActionResult Createuser(User user)
+        public async Task<ActionResult<UserVM>> Createuser(UserVM user)
         {
-            _userService.Add(user);
-            return Ok(); 
+           var model = await _userService.Add(_mapper.Map<User>(user));
+            var userViewM = _mapper.Map<UserVM>(model); 
+            return Ok(userViewM); 
 
         }
 
 
         [HttpDelete]
-        public IActionResult DeleteUser(int id)
+        public async Task<ActionResult<UserVM>> DeleteUser(int id)
         {
-            _userService.Delete(id);
+           await _userService.Delete<UserVM>(id);
             return Ok();
         }
     }

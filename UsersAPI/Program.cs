@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using UsersAPI.Model;
 using UsersAPI.Repos;
 using UsersAPI.Extension;
+using AutoMapper; 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,9 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.NeedExt(builder.Configuration);
 
- 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+
 
 
 var app = builder.Build();
@@ -26,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication(); 
 
 app.UseAuthorization();
 
