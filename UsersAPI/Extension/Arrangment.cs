@@ -43,8 +43,8 @@ namespace UsersAPI.Extension
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = uConfig["JWT:ValidAudience"],
-                    ValidIssuer = uConfig["JWT:ValidIssuer"],
+                    ValidAudience = uConfig["JWT:Audience"],
+                    ValidIssuer = uConfig["JWT:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(uConfig["JWT:Secret"]))
                 };
             });
