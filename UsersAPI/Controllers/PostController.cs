@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using UsersAPI.Model;
 using UsersAPI.Repos;
 using UsersAPI.ViewM;
@@ -26,48 +27,113 @@ namespace UsersAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PostVM>>> GetAllPosts()
         {
+
+            var userID = User.FindFirst(ClaimTypes.Sid)?.Value; 
             var posts = await _postservice.Get<PostVM>();
-            var PostViewM = _mapper.Map<List<PostVM>>(posts);
+
+            var PostsUser = posts.Where(c => c.UId == int.Parse(userID));
+
+
+            var PostViewM = _mapper.Map<List<Post>>(PostsUser);
+
+
+
             if (posts == null)
                 return NotFound();
             return Ok(PostViewM);
         }
 
-
+        [Authorize]
         [HttpPost] 
         public async Task<ActionResult<PostVM>> AddPost( [FromBody] PostVM post)
         {
-           var model = await _postservice.Add(_mapper.Map<Post>(post));
+            var userID = User.FindFirst(ClaimTypes.Sid)?.Value;
+            post.UId = int.Parse(userID);   
+
+            var model = await _postservice.Add(_mapper.Map<Post>(post));
             var PostViewM = _mapper.Map<PostVM>(model);
             return Ok(PostViewM);
         }
 
 
 
+
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<PostVM>> GetPostID(int id )
         {
-            var post = await _postservice.GetId<PostVM>(id);
-            var PostViewM = _mapper.Map<PostVM>(post);
+            // need to use try catch 
 
-            if (post == null)
+            try
+            {
+
+                var userID = User.FindFirst(ClaimTypes.Sid)?.Value;
+                var post = await _postservice.GetId<PostVM>(id);
+                var PostViewM = _mapper.Map<PostVM>(post);
+
+                if (post.UId == int.Parse(userID))
+                {
+                    return Ok(PostViewM);
+                }
                 return NotFound();
-            return Ok(PostViewM); 
+            }
+
+            catch (Exception ex)
+            {
+                return NotFound("ID is invalid ... Try again ^_^"); 
+            }
         }
 
+
+        [Authorize]
         [HttpPut]
-        public ActionResult<PostVM> UpdatePost(PostVM post)
+        public async Task<ActionResult<PostVM>> UpdatePost(PostVM post)
         {
-            var model  = _postservice.Update(_mapper.Map<Post>(post));
-            var PostViewM = _mapper.Map<PostVM>(model);
-            return Ok(PostViewM); 
+            try
+            {
+
+                var postM = await _postservice.GetId<PostVM>(post.Id);
+                var userID = User.FindFirst(ClaimTypes.Sid)?.Value;
+
+                if (postM.UId == int.Parse(userID))
+                {
+                    post.UId = int.Parse(userID);
+
+                    var model = _postservice.Update(_mapper.Map<Post>(post));
+                    var PostViewM = _mapper.Map<PostVM>(model);
+                    return Ok("Updated successfully");
+                }
+                return NotFound("Invalid!!!");
+            }
+
+            catch(Exception ex)
+            {
+                return NotFound(); 
+            }
         }
 
+
+        [Authorize]
         [HttpDelete]
         public async Task<ActionResult<PostVM>> DeletePost(int id)
         {
-           await _postservice.Delete<PostVM>(id) ;
-            return Ok(); 
+            try
+            {
+                var userID = User.FindFirst(ClaimTypes.Sid)?.Value;
+                var post = await _postservice.GetId<PostVM>(id);
+
+                if (post.UId == int.Parse(userID))
+                {
+                    await _postservice.Delete<PostVM>(id);
+                    return Ok("Deleted successfully");
+                }
+                return NotFound("Invalid !!!");
+            }
+
+            catch(Exception ex)
+            {
+                return NotFound(); 
+            }
 
         }
 
