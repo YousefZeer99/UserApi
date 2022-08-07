@@ -56,6 +56,26 @@ namespace UsersAPI.Controllers
         }
 
 
+        [HttpGet]
+        [Route("[action]")]
+
+        public async Task<IActionResult> GetPageN(int size, int page, string s)
+        {
+            try
+            {
+                var posts = await _postservice.GetPageN(size, page, s);
+                if (posts == null)
+                    return NotFound("Try again ... !!"); 
+            return Ok(_mapper.Map<List<PostVM>>(posts));
+            }
+
+            catch(Exception ex)
+            {
+                return BadRequest(); 
+            }
+        }
+
+
 
 
         [Authorize]
