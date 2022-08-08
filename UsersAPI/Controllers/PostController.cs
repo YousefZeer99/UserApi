@@ -50,7 +50,7 @@ namespace UsersAPI.Controllers
             var userID = User.FindFirst(ClaimTypes.Sid)?.Value;
             post.UId = int.Parse(userID);   
 
-            var model = await _postservice.Add(_mapper.Map<Post>(post));
+            var model = await _postservice.Add(_mapper.Map<Post>(post),int.Parse(userID));
             var PostViewM = _mapper.Map<PostVM>(model);
             return Ok(PostViewM);
         }
@@ -119,7 +119,7 @@ namespace UsersAPI.Controllers
                 {
                     post.UId = int.Parse(userID);
 
-                    var model = _postservice.Update(_mapper.Map<Post>(post));
+                    var model = _postservice.Update(_mapper.Map<Post>(post),int.Parse(userID));
                     var PostViewM = _mapper.Map<PostVM>(model);
                     return Ok("Updated successfully");
                 }

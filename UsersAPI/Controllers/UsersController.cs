@@ -56,7 +56,7 @@ namespace UsersAPI.Controllers
         [HttpPut]
         public ActionResult<UserVM> SaveUser(UserVM user)
         {
-            var model=_userService.Update(_mapper.Map<User>(user));
+            var model=_userService.Update(_mapper.Map<User>(user),user.Id);
             var userViewM = _mapper.Map<List<UserVM>>(model);
             return Ok(userViewM);
         }
@@ -65,7 +65,7 @@ namespace UsersAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<UserVM>> Createuser(UserVM user)
         {
-           var model = await _userService.Add(_mapper.Map<User>(user));
+           var model = await _userService.Add(_mapper.Map<User>(user),user.Id);
             var userViewM = _mapper.Map<UserVM>(model); 
             return Ok(userViewM); 
 

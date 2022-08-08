@@ -15,5 +15,17 @@ namespace UsersAPI.Model
 
         public User? u { get; set; }
 
+        public DateTime CreateDate { get; set; }    
+
+        public int CreateByDate { get; set;  }
+
+        public DateTime UpdateDate { get; set; }
+
+        public int UpdateByDate { get; set; }   
+
+
+
+
+
     }
 }
